@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "554048399506",
+    "project_id": "noteiceboard",
+    "storage_bucket": "noteiceboard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554048399506:android:fb053957a658accfbd5e4b",
+        "android_client_info": {
+          "package_name": "com.example.noteiceboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554048399506-jli3rt393c6h4mmaf39r6v4vi47mkhf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkpKXG1frEX4NtMypuA0vvXMZoUBTo_jE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554048399506-jli3rt393c6h4mmaf39r6v4vi47mkhf7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
