@@ -13,35 +13,38 @@
         android:theme="@style/Theme.NoteiceBoard"
         tools:targetApi="31">
         <activity
+            android:name=".StudentList"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".BatchDetailsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".AdminBatches"
+            android:label=" Batches"
+            android:theme="@style/Theme.AppCompat.Light">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".StudentBatches"
+            android:label="Joined Batches"
+            android:theme="@style/Theme.AppCompat.Light">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".AddNotice2"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Addnotice"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Addbatch"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".BatchHome"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".UpdateActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -64,15 +67,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Batchches"
-            android:exported="true"
-            android:label="Batches"
-            android:theme="@style/Theme.AppCompat.Light">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

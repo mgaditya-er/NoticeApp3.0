@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class AddActivity extends AppCompatActivity {
@@ -22,15 +23,12 @@ public class AddActivity extends AppCompatActivity {
         title_input = findViewById(R.id.title_input);
         pages_input = findViewById(R.id.pages_input);
         add_button = findViewById(R.id.add_button);
-        add_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BatchDbHelper myDB = new BatchDbHelper(AddActivity.this);
-                myDB.addBook(title_input.getText().toString().trim(),
-                        Integer.valueOf(pages_input.getText().toString().trim()));
-                Intent iHome = new Intent(AddActivity.this,Batchches.class);
-                startActivity(iHome);
-            }
-        });
+       add_button.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Toast.makeText(AddActivity.this, "", Toast.LENGTH_SHORT).show();
+           }
+       });
+
     }
 }

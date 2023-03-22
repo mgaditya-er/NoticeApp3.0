@@ -1,45 +1,42 @@
 package com.example.noteiceboard;
 
+import java.util.List;
+
 public class Batch {
-    private int id;
     private String name;
-    private String code;
-
-
-    public Batch(int id, String name, String code) {
-        this.id = id;
-        this.name = name;
-        this.code = code;
-    }
+    private int code;
+//    private List<Student> students;
 
     public Batch() {
-
     }
 
-
-
-    public int getId() {
-        return id;
+    public Batch(String name, int code) {
+        this.name = name;
+        this.code = code;
+//        this.students = students;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setCode(String code) {
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
         this.code = code;
     }
-}
 
+//    public List<Student> getStudents() {
+//        return students;
+//    }
+//
+//    public void setStudents(List<Student> students) {
+//        this.students = students;
+//    }
+}

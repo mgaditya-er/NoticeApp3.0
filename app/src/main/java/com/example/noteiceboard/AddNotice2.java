@@ -42,10 +42,7 @@ public class AddNotice2 extends AppCompatActivity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NoticeDbHelper noticeDb = new NoticeDbHelper(AddNotice2.this);
-                noticeDb.addNotice(title.getText().toString().trim(),content.getText().toString().trim(), Integer.parseInt(id));
-                Intent iHome = new Intent(AddNotice2.this,BatchHome.class);
-                startActivity(iHome);
+
             }
         });
 

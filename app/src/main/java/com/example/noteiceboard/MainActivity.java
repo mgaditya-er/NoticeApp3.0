@@ -58,6 +58,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_settings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
                 break;
+            case R.id.nav_studbatches:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+//                Intent intent3 = new Intent(MainActivity.this, StudentBatches.class);
+//                startActivity(intent3);
+
+                break;
             case R.id.nav_about:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
                 break;
@@ -71,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void onClick(View v) {
                         // Perform the log-out action here
                         // In this example, we'll just finish the current activity
-                        Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 
                         finish();
                     }

@@ -16,6 +16,10 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_baseline_person_24"
             android:title="Profile"/>
+        <item
+            android:id="@+id/nav_studbatches"
+            android:icon="@drawable/ic_baseline_laptop_24"
+            android:title="Batches"/>
 
         <item
             android:id="@+id/nav_settings"

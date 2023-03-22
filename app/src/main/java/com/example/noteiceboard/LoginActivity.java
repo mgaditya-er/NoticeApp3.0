@@ -4,6 +4,7 @@ package com.example.noteiceboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import android.content.Intent;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private FirebaseAuth auth;
     TextView forgotPassword;
+    public static final String  SHARED_PREFS = "sharedPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,15 +64,23 @@ public class LoginActivity extends AppCompatActivity {
                                             public void onSuccess(QuerySnapshot querySnapshot) {
                                                 if (!querySnapshot.isEmpty()) {
                                                     // Get the first document in the query results
+
+
                                                     DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
                                                     String role = documentSnapshot.getString("role");
                                                     if (role.equals("Student")) {
+
                                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                         startActivity(intent);
                                                     } else if (role.equals("Teacher")) {
+                                                        SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.SHARED_PREFS,0);
+                                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                        editor.putBoolean("hasLoggedIn",true);
+                                                        editor.commit();
                                                         Intent intent = new Intent(LoginActivity.this, TeacherHome.class);
                                                         startActivity(intent);
-                                                    } else {
+                                                    }
+                                                    else {
                                                         Toast.makeText(LoginActivity.this, "Invalid role", Toast.LENGTH_SHORT).show();
                                                     }
                                                 } else {
