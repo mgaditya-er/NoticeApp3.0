@@ -7,12 +7,10 @@
     tools:context=".StudentList">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerView1"
         android:layout_width="409dp"
         android:layout_height="729dp"
         android:paddingLeft="20dp"
-
-
         android:paddingBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
