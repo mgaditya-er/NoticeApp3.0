@@ -19,7 +19,7 @@
         <item
             android:id="@+id/nav_studbatches"
             android:icon="@drawable/ic_baseline_laptop_24"
-            android:title="Batches"/>
+            android:title="Batches list"/>
 
         <item
             android:id="@+id/nav_settings"

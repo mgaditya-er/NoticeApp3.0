@@ -1,19 +1,18 @@
 package com.example.noteiceboard;
 
 import java.util.List;
-
 public class Batch {
     private String name;
     private int code;
-//    private List<Student> students;
+    private List<String> emails;
 
     public Batch() {
     }
 
-    public Batch(String name, int code) {
+    public Batch(String name, int code, List<String> emails) {
         this.name = name;
         this.code = code;
-//        this.students = students;
+        this.emails = emails;
     }
 
     public String getName() {
@@ -32,6 +31,17 @@ public class Batch {
         this.code = code;
     }
 
+    public List<String> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<String> emails) {
+        this.emails = emails;
+    }
+}
+
+
+
 //    public List<Student> getStudents() {
 //        return students;
 //    }
@@ -39,4 +49,3 @@ public class Batch {
 //    public void setStudents(List<Student> students) {
 //        this.students = students;
 //    }
-}

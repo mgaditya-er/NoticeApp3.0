@@ -55,15 +55,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent.putExtra("password", passwordUser);
                 startActivity(intent);
                 break;
-            case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
-                break;
-            case R.id.nav_studbatches:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
-//                Intent intent3 = new Intent(MainActivity.this, StudentBatches.class);
-//                startActivity(intent3);
 
-                break;
+            case R.id.nav_studbatches:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudBatchesFragment()).commit();
+              break;
             case R.id.nav_about:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
                 break;

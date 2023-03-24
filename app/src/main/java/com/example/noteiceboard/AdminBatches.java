@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -93,15 +94,21 @@ public class AdminBatches extends AppCompatActivity {
                 public void onClick(View v) {
                     Toast.makeText(AdminBatches.this, "Name :"+batchName.getText().toString().trim()+"\nCode"+batchcode.getText().toString().trim(), Toast.LENGTH_SHORT).show();
                     // Get a reference to the Firebase database
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference batchesRef = database.getReference("batches");
-// Generate a random 4-digit integer code
-//                    int code = (int) (Math.random() * 9000) + 1000;
-                    int code = Integer.parseInt(batchcode.getText().toString().trim());
-// Create a new Batch object
-                    Batch batch = new Batch(""+batchName.getText().toString().trim(), code);
+                    // Get batch code and name from EditText fields
+                    String code = batchcode.getText().toString().trim();
+                    String name = batchName.getText().toString().trim();
+
+// Create a new Batch object with the batch code, name, and an empty list of emails
+                    Batch batch = new Batch(name, Integer.parseInt(code), new ArrayList<String>());
+
+// Add current user's email to the list of emails
+                    String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                    batch.getEmails().add(userEmail);
+
 // Save the Batch object to Firebase
-                    batchesRef.child(String.valueOf(code)).setValue(batch);
+                    DatabaseReference batchesRef = FirebaseDatabase.getInstance().getReference().child("batches");
+                    batchesRef.child(code).setValue(batch);
+
                     dialog.dismiss();
                 }
             });
