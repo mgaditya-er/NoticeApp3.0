@@ -20,8 +20,17 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -64,14 +73,14 @@ public class SignUpActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = signupEmail.getText().toString().trim();
+                String email1 = signupEmail.getText().toString().trim();
                 String pass = signupPassword.getText().toString().trim();
                 String fname1 = fname.getText().toString().trim();
                 String lname1 = lname.getText().toString().trim();
                 String username1 = username.getText().toString().trim();
                 String mobile1 = mobile.getText().toString().trim();
-                String role = autoCompleteTxt.getText().toString().trim();
-                if (email.isEmpty()){
+                String role1 = autoCompleteTxt.getText().toString().trim();
+                if (email1.isEmpty()){
                     signupEmail.setError("Email cannot be empty");
                 }
                 if (fname1.isEmpty()){
@@ -89,21 +98,61 @@ public class SignUpActivity extends AppCompatActivity {
                 if (pass.isEmpty()){
                     signupPassword.setError("Password cannot be empty");
                 }
-                if (role.isEmpty()){
+                if (role1.isEmpty()){
                     autoCompleteTxt.setError("Role cannot be empty");
                 }
                 else{
-                    auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    auth.createUserWithEmailAndPassword(email1, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(SignUpActivity.this, "SignUp Successful", Toast.LENGTH_SHORT).show();
-                                User newUser = new User(fname1,lname1,username1,email,pass,mobile1,role);
+                                User newUser = new User(fname1,lname1,username1,email1,pass,mobile1,role1);
                                 db.collection("users")
                                         .add(newUser)
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
+//                                          ------------------------------------------
+// Get a reference to the Firebase database
+                                                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+
+// Get a reference to the "students" node in the database
+                                                DatabaseReference studentsRef = databaseRef.child("students");
+
+// Generate a unique student ID using the username and email
+                                                String studentId = username1 + "-" + UUID.randomUUID().toString();
+
+// Create a new Student object with the required attributes
+                                                Map<String, Boolean> batchIds = new HashMap<>();
+                                                Student student = new Student(studentId, fname1 + " " + lname1, email1, batchIds);
+
+// Check if the "students" node exists in the database
+                                                studentsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                                if (!dataSnapshot.exists()) {
+// If the "students" node doesn't exist, create it
+                                                                    databaseRef.child("students").setValue(true);
+                                                                }
+                                                                // Save the student object to the database
+                                                                studentsRef.child(studentId).setValue(student);
+
+                                                                // Display a success message to the user
+                                                                Toast.makeText(getApplicationContext(), "Student registered successfully", Toast.LENGTH_SHORT).show();
+                                                            }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                        Log.e(TAG, "Failed to read value.", databaseError.toException());
+                                                    }
+                                                });
+
+
+//                                          ---------------------------------------------
+
+
+
                                                 Log.d(TAG, "User added with ID: " + documentReference.getId());
                                                 startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                                             }
