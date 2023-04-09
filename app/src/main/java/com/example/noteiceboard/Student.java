@@ -1,5 +1,7 @@
 package com.example.noteiceboard;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Student {
@@ -18,6 +20,8 @@ public class Student {
         this.email = email;
         this.batchIds = batchIds;
     }
+
+
 
     public String getStudentId() {
         return studentId;

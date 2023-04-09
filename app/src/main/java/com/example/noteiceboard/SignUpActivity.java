@@ -1,6 +1,7 @@
 package com.example.noteiceboard;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,8 +29,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 
@@ -115,38 +120,47 @@ public class SignUpActivity extends AppCompatActivity {
                                             public void onSuccess(DocumentReference documentReference) {
 //                                          ------------------------------------------
 // Get a reference to the Firebase database
-                                                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+//                                                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
 // Get a reference to the "students" node in the database
-                                                DatabaseReference studentsRef = databaseRef.child("students");
+//                                                DatabaseReference studentsRef = databaseRef.child("students");
 
 // Generate a unique student ID using the username and email
-                                                String studentId = username1 + "-" + UUID.randomUUID().toString();
+                                                String studentId = System.currentTimeMillis() + "-" + new Random().nextInt(1000000);
 
 // Create a new Student object with the required attributes
                                                 Map<String, Boolean> batchIds = new HashMap<>();
+                                                batchIds.put("1111",true);
                                                 Student student = new Student(studentId, fname1 + " " + lname1, email1, batchIds);
 
 // Check if the "students" node exists in the database
-                                                studentsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                                if (!dataSnapshot.exists()) {
-// If the "students" node doesn't exist, create it
-                                                                    databaseRef.child("students").setValue(true);
-                                                                }
-                                                                // Save the student object to the database
-                                                                studentsRef.child(studentId).setValue(student);
+                                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                DatabaseReference studentsRef = database.getReference("students");
 
-                                                                // Display a success message to the user
-                                                                Toast.makeText(getApplicationContext(), "Student registered successfully", Toast.LENGTH_SHORT).show();
-                                                            }
+                                                studentsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        if (dataSnapshot.exists()) {
+                                                            // "students" node exists in the database
+//                                                            // Add the new student ID to the list
+//                                                            // Create a new child node with the student ID as the key and the student object as the value
+                                                            DatabaseReference batchesRef = FirebaseDatabase.getInstance().getReference().child("students");
+                                                            batchesRef.child(studentId).setValue(student);
+                                                        } else {
+                                                            // "students" node does not exist in the database, create it with the initial student ID
+                                                            DatabaseReference batchesRef = FirebaseDatabase.getInstance().getReference().child("students");
+                                                            batchesRef.child(studentId).setValue(student);
+                                                        }
+                                                    }
 
                                                     @Override
-                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                        Log.e(TAG, "Failed to read value.", databaseError.toException());
+                                                    public void onCancelled(DatabaseError databaseError) {
+                                                        // Handle any errors here
+                                                        Toast.makeText(SignUpActivity.this, "database error boss", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
+
+
 
 
 //                                          ---------------------------------------------
