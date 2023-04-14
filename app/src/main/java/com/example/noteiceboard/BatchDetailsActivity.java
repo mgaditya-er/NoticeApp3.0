@@ -32,6 +32,16 @@ public class BatchDetailsActivity extends AppCompatActivity {
             }
         });
 
+        noticebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BatchDetailsActivity.this, NotceHome.class);
+                intent.putExtra("batchname", batchName); // Pass the batch id to the new activity
+                startActivity(intent);
+
+            }
+        });
+
 
 
     }

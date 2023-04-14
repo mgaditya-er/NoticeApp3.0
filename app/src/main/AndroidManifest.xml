@@ -13,6 +13,14 @@
         android:theme="@style/Theme.NoteiceBoard"
         tools:targetApi="31">
         <activity
+            android:name=".NotceHome"
+            android:label=" Notice"
+            android:theme="@style/Theme.AppCompat.Light">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".StudentList"
             android:label=" Batches"
             android:theme="@style/Theme.AppCompat.Light">
@@ -35,15 +43,14 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-<!--        <activity-->
-<!--            android:name=".StudentBatches"-->
-<!--            android:label="Joined Batches"-->
-<!--            android:theme="@style/Theme.AppCompat.Light">-->
-<!--            <meta-data-->
-<!--                android:name="android.app.lib_name"-->
-<!--                android:value="" />-->
-<!--        </activity>-->
+        </activity> <!-- <activity -->
+        <!-- android:name=".StudentBatches" -->
+        <!-- android:label="Joined Batches" -->
+        <!-- android:theme="@style/Theme.AppCompat.Light"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.app.lib_name" -->
+        <!-- android:value="" /> -->
+        <!-- </activity> -->
         <activity
             android:name=".AddNotice2"
             android:exported="false">
