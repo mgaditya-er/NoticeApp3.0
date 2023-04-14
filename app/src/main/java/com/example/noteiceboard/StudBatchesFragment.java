@@ -1,11 +1,14 @@
 package com.example.noteiceboard;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +40,11 @@ public class StudBatchesFragment extends Fragment {
     private FloatingActionButton addButton;
     private RecyclerView recyclerView;
     private ListBatchAdapter2 adapter;
-    private List<Batch> batchList = new ArrayList<>();
+    private List<String> batchList1 = new ArrayList<>();
 
     private FirebaseAuth mAuth;
     private String currentUserEmail;
+    private String studentId1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,34 +65,64 @@ public class StudBatchesFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.recyclerView2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        DatabaseReference batchesRef = FirebaseDatabase.getInstance().getReference().child("batches");
 
-        batchesRef.orderByChild("emails").startAt(currentUserEmail).endAt(currentUserEmail + "\uf8ff").addListenerForSingleValueEvent(new ValueEventListener() {
+        String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        DatabaseReference studentsRef = FirebaseDatabase.getInstance().getReference().child("students");
+
+        Query query = studentsRef.orderByChild("email").equalTo(userEmail);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Batch batch = snapshot.getValue(Batch.class);
-                        if (batch != null) {
-                            batchList.add(batch);
-                        }
+                    // Loop through the results and retrieve the studentId
+                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                        studentId1 = childSnapshot.getKey();
+                        // Do something with the studentId
+                        getActivity().setTitle(studentId1);
                     }
-                    adapter.notifyDataSetChanged();
                 } else {
-                    // No batch found for the current user
-                    Toast.makeText(getContext(), "No batch found!", Toast.LENGTH_SHORT).show();
+                    // No students found with the current user's email
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle the error
-                Toast.makeText(getContext(), "Database error", Toast.LENGTH_SHORT).show();
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors here
             }
         });
 
-        adapter = new ListBatchAdapter2(getContext(), batchList);
-        recyclerView.setAdapter(adapter);
+
+
+
+
+
+
+        // Get a reference to the Firebase database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference batchesRef = database.getReference("batches");
+
+        // Retrieve data from Firebase and display in RecyclerView
+        batchesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Batch> batches = new ArrayList<>();
+                for (DataSnapshot batchSnapshot : snapshot.getChildren()) {
+                    Batch batch = batchSnapshot.getValue(Batch.class);
+                    if(batch.getCode()==1111 || batch.getCode()==3333)
+                    {
+                        batches.add(batch);
+                    }
+                }
+                BatchAdapter adapter = new BatchAdapter(batches);
+                recyclerView.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle database error
+              Toast.makeText(getContext(), "No batch found!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
         return rootView;
     }
@@ -132,6 +166,7 @@ public class StudBatchesFragment extends Fragment {
                                     emails = (List<String>) snapshot.getValue();
                                     if (emails == null) {
                                         emails = new ArrayList<>();
+
                                     } else if (emails.contains(userEmail)) {
                                         Toast.makeText(getApplicationContext(), "You have already joined this batch", Toast.LENGTH_SHORT).show();
                                         return;
@@ -144,6 +179,46 @@ public class StudBatchesFragment extends Fragment {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
+                                           //
+
+
+                                            String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                                            DatabaseReference studentsRef = FirebaseDatabase.getInstance().getReference().child("students");
+
+                                            Query query = studentsRef.orderByChild("email").equalTo(userEmail);
+                                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    if (dataSnapshot.exists()) {
+                                                        // Loop through the results and retrieve the studentId
+                                                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                            String studentId = childSnapshot.getKey();
+                                                            // Do something with the studentId
+                                                            Toast.makeText(getApplicationContext(), "id"+studentId, Toast.LENGTH_SHORT).show();
+
+                                                            //
+
+
+
+
+                                                            //
+
+
+                                                        }
+                                                    } else {
+                                                        // No students found with the current user's email
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                    // Handle errors here
+                                                }
+                                            });
+
+
+
+                                            //
                                             Toast.makeText(getApplicationContext(), "Added to batch!", Toast.LENGTH_SHORT).show();
                                         }
                                     })

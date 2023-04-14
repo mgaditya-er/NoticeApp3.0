@@ -146,6 +146,7 @@ public class SignUpActivity extends AppCompatActivity {
 //                                                            // Create a new child node with the student ID as the key and the student object as the value
                                                             DatabaseReference batchesRef = FirebaseDatabase.getInstance().getReference().child("students");
                                                             batchesRef.child(studentId).setValue(student);
+
                                                         } else {
                                                             // "students" node does not exist in the database, create it with the initial student ID
                                                             DatabaseReference batchesRef = FirebaseDatabase.getInstance().getReference().child("students");

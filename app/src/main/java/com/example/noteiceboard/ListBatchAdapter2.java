@@ -1,6 +1,5 @@
 package com.example.noteiceboard;
 
-import android.content.Intent;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -19,9 +18,9 @@ import java.util.List;
 public class ListBatchAdapter2 extends RecyclerView.Adapter<ListBatchAdapter2.ViewHolder> {
 
     private Context context;
-    private List<Batch> batchList;
+    private List<String> batchList;
 
-    public ListBatchAdapter2(Context context, List<Batch> batchList) {
+    public ListBatchAdapter2(Context context, List<String> batchList) {
         this.context = context;
         this.batchList = batchList;
     }
@@ -33,20 +32,24 @@ public class ListBatchAdapter2 extends RecyclerView.Adapter<ListBatchAdapter2.Vi
         return new ViewHolder(view);
     }
 
-
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Batch batch = batchList.get(position);
-        holder.tvName.setText(batch.getName());
-        holder.tvCode.setText(String.valueOf(batch.getCode()));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Batch is clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
+
+
+//    @Override
+//    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+//        String batch = batchList.get(position);
+//        holder.tvName.setText(batch.getName());
+//        holder.tvCode.setText(String.valueOf(batch.getCode()));
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(context, "Batch is clicked", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
 
 

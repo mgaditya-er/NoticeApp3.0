@@ -58,6 +58,7 @@ public class AdminBatches extends AppCompatActivity {
                 List<Batch> batches = new ArrayList<>();
                 for (DataSnapshot batchSnapshot : snapshot.getChildren()) {
                     Batch batch = batchSnapshot.getValue(Batch.class);
+
                     batches.add(batch);
                 }
                 BatchAdapter adapter = new BatchAdapter(batches);

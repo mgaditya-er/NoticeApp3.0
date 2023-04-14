@@ -15,6 +15,11 @@ public class Batch {
         this.emails = emails;
     }
 
+    public Batch(String code) {
+        this.code = Integer.parseInt(code);
+
+    }
+
     public String getName() {
         return name;
     }
