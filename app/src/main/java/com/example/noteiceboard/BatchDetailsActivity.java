@@ -18,6 +18,8 @@ public class BatchDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_batch_details);
         // Get the batchname extra from the intent
         String batchName = getIntent().getStringExtra("batchname");
+        String batchcode = getIntent().getStringExtra("code");
+
         setTitle(batchName);
 
         listbtn = findViewById(R.id.Listbutton2);
@@ -35,8 +37,10 @@ public class BatchDetailsActivity extends AppCompatActivity {
         noticebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BatchDetailsActivity.this, NotceHome.class);
+                Intent intent = new Intent(BatchDetailsActivity.this, NoticeHome.class);
                 intent.putExtra("batchname", batchName); // Pass the batch id to the new activity
+                intent.putExtra("code",batchcode);
+
                 startActivity(intent);
 
             }
