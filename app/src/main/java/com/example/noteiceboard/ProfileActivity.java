@@ -46,6 +46,8 @@ public class ProfileActivity extends AppCompatActivity {
         if (user != null) {
             String email = user.getEmail();
 
+            String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            profileEmail.setText(userEmail);
 
             // Query the database for the user's data using their email
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
@@ -58,12 +60,14 @@ public class ProfileActivity extends AppCompatActivity {
                         String fname = dataSnapshot.child("fname").getValue(String.class);
                         String username = dataSnapshot.child("username").getValue(String.class);
                         String password = dataSnapshot.child("password").getValue(String.class);
+                        String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
 
                         // Update the UI with the retrieved data
                         titleName.setText(fname);
                         titleUsername.setText(username);
                         profileName.setText(fname);
-                        profileEmail.setText(email);
+                        profileEmail.setText(userEmail);
                         profileUsername.setText(username);
                         profilePassword.setText(password);
                     }

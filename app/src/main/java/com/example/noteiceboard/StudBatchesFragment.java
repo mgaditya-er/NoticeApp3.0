@@ -93,14 +93,9 @@ public class StudBatchesFragment extends Fragment {
 
 
 
-
-
-
-
         // Get a reference to the Firebase database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference batchesRef = database.getReference("batches");
-
         // Retrieve data from Firebase and display in RecyclerView
         batchesRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -108,7 +103,7 @@ public class StudBatchesFragment extends Fragment {
                 List<Batch> batches = new ArrayList<>();
                 for (DataSnapshot batchSnapshot : snapshot.getChildren()) {
                     Batch batch = batchSnapshot.getValue(Batch.class);
-                    if(batch.getCode()==1111 || batch.getCode()==3333)
+                    if(batch.getCode()==1111 || batch.getCode()==2222)
                     {
                         batches.add(batch);
                     }
@@ -161,6 +156,7 @@ public class StudBatchesFragment extends Fragment {
                             // the batch with the given code exists
                             List<String> emails = new ArrayList<>();
                             String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 if (snapshot.getKey().equals("emails")) {
                                     emails = (List<String>) snapshot.getValue();

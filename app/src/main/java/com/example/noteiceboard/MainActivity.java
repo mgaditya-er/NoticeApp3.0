@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 
+import org.w3c.dom.Text;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
