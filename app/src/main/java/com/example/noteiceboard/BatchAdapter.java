@@ -49,7 +49,7 @@ public class BatchAdapter extends RecyclerView.Adapter<BatchAdapter.BatchViewHol
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), BatchDetailsActivity.class);
                 intent.putExtra("batchname", batch.getName()); // Pass the batch id to the new activity
-                intent.putExtra("code",batch.getCode());
+                intent.putExtra("code",String.valueOf(batch.getCode()));
                 v.getContext().startActivity(intent);
             }
         });

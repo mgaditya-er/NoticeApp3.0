@@ -36,7 +36,7 @@ public class NoticeHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notce_home);
-        String batchcode = getIntent().getStringExtra("code");
+         String batchcode = getIntent().getStringExtra("code");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -44,7 +44,8 @@ public class NoticeHome extends AppCompatActivity {
 
         // Get a reference to the Firebase database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference batchesRef = database.getReference("notices").child("1111");
+        DatabaseReference batchesRef = database.getReference("notices").child(batchcode);
+
 
         // Retrieve data from Firebase and display in RecyclerView
         batchesRef.addValueEventListener(new ValueEventListener() {
@@ -96,7 +97,7 @@ public class NoticeHome extends AppCompatActivity {
                             floatingButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    showBatchDialog();
+                                    showBatchDialog(batchcode);
                                 }
                             });
                             
@@ -108,7 +109,7 @@ public class NoticeHome extends AppCompatActivity {
         }
     }
 
-    private void showBatchDialog() {
+    private void showBatchDialog(String batchcode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.createnoticedialog, null);
         builder.setView(dialogView);
@@ -137,7 +138,8 @@ public class NoticeHome extends AppCompatActivity {
                 Notice notice = new Notice(title,body,new ArrayList<String>());
 // Add current user's email to the list of emails
 
-                DatabaseReference batchesRef1 = FirebaseDatabase.getInstance().getReference().child("notices").child("1111");
+
+                DatabaseReference batchesRef1 = FirebaseDatabase.getInstance().getReference().child("notices").child(batchcode);
                 String noticeId = batchesRef1.push().getKey();
 
                 batchesRef1.child(noticeId).setValue(notice);

@@ -20,7 +20,7 @@ public class BatchDetailsActivity extends AppCompatActivity {
         String batchName = getIntent().getStringExtra("batchname");
         String batchcode = getIntent().getStringExtra("code");
 
-        setTitle(batchName);
+        setTitle(batchcode);
 
         listbtn = findViewById(R.id.Listbutton2);
         noticebtn = findViewById(R.id.Noticebutton3);
