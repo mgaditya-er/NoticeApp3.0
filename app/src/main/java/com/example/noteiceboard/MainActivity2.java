@@ -12,12 +12,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,14 +100,49 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity2.this, UploadActivity.class);
-                intent.putExtra("code",batchcode);
-                startActivity(intent);
-            }
-        });
+        fab.setVisibility(View.GONE);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        if (auth.getCurrentUser() != null) {
+            String email = auth.getCurrentUser().getEmail();
+
+            Query query = db.collection("users").whereEqualTo("email", email);
+
+            query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot querySnapshot) {
+                    if (!querySnapshot.isEmpty()) {
+                        // Get the first document in the query results
+                        DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
+                        String role = documentSnapshot.getString("role");
+                        if (role.equals("Teacher")) {
+                            // Show the floating button
+                            fab.setVisibility(View.VISIBLE);
+                            fab.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(MainActivity2.this, UploadActivity.class);
+                                    intent.putExtra("code",batchcode);
+                                    startActivity(intent);
+                                }
+                            });
+
+                        }
+                    }
+                }
+            });
+
+        }
+
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity2.this, UploadActivity.class);
+//                intent.putExtra("code",batchcode);
+//                startActivity(intent);
+//            }
+//        });
 
     }
     public void searchList(String text){
