@@ -91,7 +91,7 @@ public class StudBatchesFragment extends Fragment {
             }
         });
 
-
+//----
 
         // Get a reference to the Firebase database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -215,6 +215,7 @@ public class StudBatchesFragment extends Fragment {
 
 
                                             //
+
                                             Toast.makeText(getApplicationContext(), "Added to batch!", Toast.LENGTH_SHORT).show();
                                         }
                                     })
