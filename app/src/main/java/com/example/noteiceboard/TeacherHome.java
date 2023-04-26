@@ -78,6 +78,8 @@ public class TeacherHome extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.nav_studentlist:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudentlistFragment()).commit();
+                Intent intent3 = new Intent(TeacherHome.this, MainActivity2.class);
+                startActivity(intent3);
                 break;
             case R.id.nav_batches:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
