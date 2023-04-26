@@ -37,7 +37,7 @@ public class BatchDetailsActivity extends AppCompatActivity {
         noticebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BatchDetailsActivity.this, NoticeHome.class);
+                Intent intent = new Intent(BatchDetailsActivity.this, MainActivity2.class);
                 intent.putExtra("batchname", batchName); // Pass the batch id to the new activity
                 intent.putExtra("code",batchcode);
 

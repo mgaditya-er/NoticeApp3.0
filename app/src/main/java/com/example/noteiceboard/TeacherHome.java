@@ -76,19 +76,11 @@ public class TeacherHome extends AppCompatActivity implements NavigationView.OnN
                 intent.putExtra("password", passwordUser);
                 startActivity(intent);
                 break;
-            case R.id.nav_studentlist:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudentlistFragment()).commit();
-                Intent intent3 = new Intent(TeacherHome.this, MainActivity2.class);
-                startActivity(intent3);
-                break;
+
             case R.id.nav_batches:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                 Intent intent2 = new Intent(TeacherHome.this, AdminBatches.class);
                 startActivity(intent2);
-                break;
-
-            case R.id.nav_about:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
                 break;
             case R.id.nav_logout:
                 Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();

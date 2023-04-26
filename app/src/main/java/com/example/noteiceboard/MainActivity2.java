@@ -35,6 +35,9 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        String batchcode = getIntent().getStringExtra("code");
+        String batchName = getIntent().getStringExtra("batchname");
+        setTitle(batchName);
 
         recyclerView = findViewById(R.id.recyclerView);
         fab = findViewById(R.id.fab);
@@ -52,10 +55,10 @@ public class MainActivity2 extends AppCompatActivity {
 
         dataList = new ArrayList<>();
 
-        adapter = new MyAdapter(MainActivity2.this, dataList);
+        adapter = new MyAdapter(MainActivity2.this, dataList,batchcode);
         recyclerView.setAdapter(adapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Android Tutorials");
+        databaseReference = FirebaseDatabase.getInstance().getReference("notices").child(batchcode);
         dialog.show();
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -95,6 +98,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity2.this, UploadActivity.class);
+                intent.putExtra("code",batchcode);
                 startActivity(intent);
             }
         });

@@ -61,9 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_studbatches:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudBatchesFragment()).commit();
               break;
-            case R.id.nav_about:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
-                break;
+
             case R.id.nav_logout:
                 Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
                 Button logOutButton = findViewById(R.id.nav_logout);

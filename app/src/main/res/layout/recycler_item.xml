@@ -61,18 +61,20 @@
             android:layout_marginStart="20dp"
             android:maxLines="1"
             android:layout_marginBottom="12dp"/>
+
         <TextView
+            android:id="@+id/recLang"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:id="@+id/recLang"
+            android:layout_below="@id/recTitle"
+            android:layout_marginStart="168dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:layout_toEndOf="@id/recImage"
+            android:maxLines="1"
             android:text="desc"
             android:textColor="@color/lavender"
-            android:textSize="10sp"
-            android:layout_toEndOf="@id/recImage"
-            android:layout_below="@id/recTitle"
-            android:layout_marginStart="40dp"
-            android:maxLines="1"
-            android:layout_marginBottom="12dp"/>
+            android:textSize="10sp" />
 
     </RelativeLayout>
 

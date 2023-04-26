@@ -43,6 +43,8 @@ public class UploadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
+        String batchcode = getIntent().getStringExtra("code");
+        setTitle(batchcode);
 
         uploadImage = findViewById(R.id.uploadImage);
         uploadDesc = findViewById(R.id.uploadDesc);
@@ -78,12 +80,12 @@ public class UploadActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveData();
+                saveData(batchcode);
             }
         });
     }
 
-    public void saveData(){
+    public void saveData(String batchcode){
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Android Images")
                 .child(uri.getLastPathSegment());
@@ -102,7 +104,7 @@ public class UploadActivity extends AppCompatActivity {
                 while (!uriTask.isComplete());
                 Uri urlImage = uriTask.getResult();
                 imageURL = urlImage.toString();
-                uploadData();
+                uploadData(batchcode);
                 dialog.dismiss();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -113,7 +115,7 @@ public class UploadActivity extends AppCompatActivity {
         });
     }
 
-    public void uploadData(){
+    public void uploadData(String batchcode){
 
         String title = uploadTopic.getText().toString();
         String desc = uploadDesc.getText().toString();
@@ -126,7 +128,7 @@ public class UploadActivity extends AppCompatActivity {
 
         String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
 
-        FirebaseDatabase.getInstance().getReference("Android Tutorials").child(currentDate)
+        FirebaseDatabase.getInstance().getReference("notices").child(batchcode).child(currentDate)
                 .setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

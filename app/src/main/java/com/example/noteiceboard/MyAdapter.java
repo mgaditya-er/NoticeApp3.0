@@ -21,10 +21,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     private Context context;
     private List<DataClass> dataList;
+    private String batchcode;
 
-    public MyAdapter(Context context, List<DataClass> dataList) {
+
+    public MyAdapter(Context context, List<DataClass> dataList, String batchcode) {
         this.context = context;
         this.dataList = dataList;
+        this.batchcode = batchcode;
     }
 
     @NonNull
@@ -45,6 +48,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra("code",batchcode);
                 intent.putExtra("Image", dataList.get(holder.getAdapterPosition()).getDataImage());
                 intent.putExtra("Description", dataList.get(holder.getAdapterPosition()).getDataDesc());
                 intent.putExtra("Title", dataList.get(holder.getAdapterPosition()).getDataTitle());
