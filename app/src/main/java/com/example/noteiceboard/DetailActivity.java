@@ -3,8 +3,13 @@ package com.example.noteiceboard;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,13 +27,23 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class DetailActivity extends AppCompatActivity {
 
     TextView detailDesc, detailTitle, detailLang;
     ImageView detailImage;
+
     FloatingActionButton deleteButton, editButton;
     String key = "";
     String imageUrl = "";
+    String pdfUrl = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +57,7 @@ public class DetailActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.deleteButton);
         editButton = findViewById(R.id.editButton);
         detailLang = findViewById(R.id.detailLang);
+        Button downloadButton = findViewById(R.id.downloadButton);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
@@ -50,9 +66,24 @@ public class DetailActivity extends AppCompatActivity {
             detailLang.setText(bundle.getString("Language"));
             key = bundle.getString("Key");
             imageUrl = bundle.getString("Image");
+            pdfUrl = bundle.getString("Pdf");
             Glide.with(this).load(bundle.getString("Image")).into(detailImage);
         }
 
+// Set an OnClickListener to the download button
+        downloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the PDF URL
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setType("application/pdf");
+                intent.setData(Uri.parse(pdfUrl));
+                startActivity(intent);
+                // Execute an AsyncTask to download the PDF
+//                new DownloadPdfTask().execute(pdfUrl);
+                Toast.makeText(DetailActivity.this, ""+pdfUrl, Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         deleteButton.setVisibility(View.GONE);
@@ -93,7 +124,7 @@ public class DetailActivity extends AppCompatActivity {
                                     });
                                 }
                             });
-
+                            editButton.setVisibility(View.VISIBLE);
                             editButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -116,4 +147,5 @@ public class DetailActivity extends AppCompatActivity {
         }
 
     }
+
 }

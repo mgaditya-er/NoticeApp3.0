@@ -39,6 +39,7 @@
         android:textSize="18sp"
         android:textColor="@color/lavender"/>
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,6 +50,7 @@
         android:id="@+id/detailDesc"
         android:textSize="18sp"
         android:textColor="@color/lavender"/>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -86,7 +88,25 @@
                 app:fab_colorNormal="@color/lavender"
                 app:fab_size="mini"/>
 
+
         </com.github.clans.fab.FloatingActionMenu>
+
+        <Button
+            android:id="@+id/downloadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="74dp"
+            android:layout_marginBottom="195dp"
+            android:background="@color/lavender"
+            android:padding="12dp"
+            android:text="Download PDF"
+            android:textColor="@color/white" />
+
+
+
 
     </RelativeLayout>
 
