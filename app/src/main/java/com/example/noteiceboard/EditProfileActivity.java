@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 public class EditProfileActivity extends AppCompatActivity {
@@ -70,7 +73,17 @@ public class EditProfileActivity extends AppCompatActivity {
         emailUser = intent.getStringExtra("email");
         usernameUser = intent.getStringExtra("username");
         passwordUser = intent.getStringExtra("password");
-        editName.setText(nameUser);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            String displayName = user.getDisplayName();
+            if (displayName != null) {
+                // Do something with the user's display name
+                editName.setText(displayName);
+
+            }
+        }
         editEmail.setText(emailUser);
         editUsername.setText(usernameUser);
         editPassword.setText(passwordUser);

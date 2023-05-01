@@ -8,10 +8,15 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -114,7 +119,9 @@ public class UpdateActivity extends AppCompatActivity {
                 Uri urlImage = uriTask.getResult();
                 imageUrl = urlImage.toString();
                 updateData();
+
                 dialog.dismiss();
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

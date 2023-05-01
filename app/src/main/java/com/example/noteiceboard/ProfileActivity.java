@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,16 +30,19 @@ public class ProfileActivity extends AppCompatActivity {
         profileEmail = findViewById(R.id.profileEmail);
         profileUsername = findViewById(R.id.profileUsername);
         profilePassword = findViewById(R.id.profilePassword);
-        titleName = findViewById(R.id.titleName);
-        titleUsername = findViewById(R.id.titleUsername);
-        editProfile = findViewById(R.id.editButton);
-        showAllUserData();
+
+        editProfile = findViewById(R.id.editButton1);
+
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 passUserData();
+                Toast.makeText(ProfileActivity.this, "Edit is clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ProfileActivity.this,EditProfileActivity.class);
+                startActivity(intent);
             }
         });
+        showAllUserData();
     }
     public void showAllUserData() {
         // Get the current user's email address

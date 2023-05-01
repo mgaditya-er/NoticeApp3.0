@@ -2,9 +2,14 @@ package com.example.noteiceboard;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.Notification;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -46,6 +51,20 @@ public class StudBatchesFragment extends Fragment {
     private String currentUserEmail;
     private String studentId1;
 
+    private BroadcastReceiver mNotificationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Show the notification
+            Notification notification = intent.getParcelableExtra("notification");
+            NotificationManagerCompat.from(context).notify(1, notification);
+        }
+    };
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter("notification_received");
+        getActivity().registerReceiver(mNotificationReceiver, filter);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_stud_batches, container, false);

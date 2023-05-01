@@ -8,6 +8,8 @@ public class DataClass {
     private String dataDesc;
     private String dataLang;
     private String dataImage;
+    private String dataPdf;
+
     private String key;
 
     public String getKey() {
@@ -32,6 +34,22 @@ public class DataClass {
 
     public String getDataImage() {
         return dataImage;
+    }
+
+    public String getDataPdf() {
+        return dataPdf;
+    }
+
+    public void setDataPdf(String dataPdf) {
+        this.dataPdf = dataPdf;
+    }
+
+    public DataClass(String dataTitle, String dataDesc, String dataLang, String dataImage, String dataPdf) {
+        this.dataTitle = dataTitle;
+        this.dataDesc = dataDesc;
+        this.dataLang = dataLang;
+        this.dataImage = dataImage;
+        this.dataPdf = dataPdf;
     }
 
     public DataClass(String dataTitle, String dataDesc, String dataLang, String dataImage) {

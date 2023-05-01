@@ -32,7 +32,7 @@
                 android:textColor="@color/lavender"/>
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:src="@drawable/uploadimg"
                 android:id="@+id/uploadImage"
                 android:layout_marginTop="10dp"
@@ -67,6 +67,19 @@
                 android:hint="Enter language"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Select PDF File"
+                android:id="@+id/selectPDFButton"
+                android:textSize="18sp"
+                android:layout_marginTop="20dp"
+                app:cornerRadius = "20dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/selectedPDFTextView"
+                android:visibility="gone"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"

@@ -7,10 +7,28 @@
     tools:context=".HomeFragment">
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Home Fragment"
         android:textSize="30sp"
         android:layout_centerInParent="true"
         android:textColor="@color/lavender"/>
+
+    <Button
+        android:id="@+id/my_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/text"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="153dp"
+        android:width="50dp"
+        android:layout_marginTop="107dp"
+        android:layout_marginEnd="149dp"
+        android:layout_marginBottom="163dp"
+        android:text="notify" />
 </RelativeLayout>
