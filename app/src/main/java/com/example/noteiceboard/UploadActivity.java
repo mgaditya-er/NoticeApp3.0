@@ -1,6 +1,8 @@
 package com.example.noteiceboard;
 
 
+import static com.example.noteiceboard.Constants.TOPIC;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -38,6 +40,10 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UploadActivity extends AppCompatActivity {
 
@@ -205,18 +211,11 @@ public class UploadActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Toast.makeText(UploadActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                             // Create a notification data payload
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(UploadActivity.this, "channel_id")
-                                    .setSmallIcon(R.drawable.notification_icon)
-                                    .setContentTitle("New Notice Added")
-                                    .setContentText(""+title+""+currentDate)
-                                    .setPriority(NotificationCompat.PRIORITY_HIGH);
+                            String titletxt = "Notice "+title+" Uploaded";
+                            String messagetxt = " in batch with "+batchcode;
 
-                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(UploadActivity.this);
-
-                            // notificationId is a unique int for each notification that you must define
-                            int notificationId = 1;
-                            notificationManager.notify(notificationId, builder.build());
-
+                            PushNotification notification = new PushNotification(new NotificationData(titletxt,messagetxt),TOPIC);
+                            sendNotification(notification);
                             finish();
                         }
                     }
@@ -228,6 +227,29 @@ public class UploadActivity extends AppCompatActivity {
                 });
 
 
+
+    }
+
+    private void sendNotification(PushNotification notification) {
+        ApiUtilities.getClient().sendNotification(notification).enqueue(new Callback<PushNotification>() {
+            @Override
+            public void onResponse(Call<PushNotification> call, Response<PushNotification> response) {
+                if(response.isSuccessful())
+                {
+                    Toast.makeText(UploadActivity.this, "success", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(UploadActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PushNotification> call, Throwable t) {
+                Toast.makeText(UploadActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
     }
 }

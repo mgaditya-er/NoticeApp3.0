@@ -70,7 +70,9 @@ public class TeacherHome extends AppCompatActivity implements NavigationView.OnN
                 Intent intent1 = getIntent();
                 String emailUser = intent1.getStringExtra("email");
                 String passwordUser = intent1.getStringExtra("password");
-                Intent intent = new Intent(TeacherHome.this, ProfileActivity.class);
+//                Intent intent = new Intent(TeacherHome.this, ProfileActivity.class);
+                Intent intent = new Intent(TeacherHome.this, NotificationHome.class);
+
                 intent.putExtra("email", emailUser);
                 intent.putExtra("password", passwordUser);
                 startActivity(intent);
