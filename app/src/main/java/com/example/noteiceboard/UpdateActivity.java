@@ -1,6 +1,8 @@
 package com.example.noteiceboard;
 
 
+import static com.example.noteiceboard.Constants.TOPIC;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -34,6 +36,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UpdateActivity extends AppCompatActivity {
 
@@ -128,7 +134,7 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveData();
-                Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
+                Intent intent = new Intent(UpdateActivity.this, AdminBatches.class);
                 startActivity(intent);
             }
         });
@@ -201,7 +207,14 @@ public class UpdateActivity extends AppCompatActivity {
 
                     reference.delete();
                     reference2.delete();
+                    String titletxt = "Notice "+title+" Updated";
+                    String messagetxt = " Please Check";
+
+                    PushNotification notification = new PushNotification(new NotificationData(titletxt,messagetxt),TOPIC);
+                    sendNotification(notification);
                     Toast.makeText(UpdateActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(UpdateActivity.this, AdminBatches.class);
+
                     finish();
                 }
             }
@@ -211,5 +224,27 @@ public class UpdateActivity extends AppCompatActivity {
                 Toast.makeText(UpdateActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void sendNotification(PushNotification notification) {
+        ApiUtilities.getClient().sendNotification(notification).enqueue(new Callback<PushNotification>() {
+            @Override
+            public void onResponse(Call<PushNotification> call, Response<PushNotification> response) {
+                if(response.isSuccessful())
+                {
+                    Toast.makeText(UpdateActivity.this, "success", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(UpdateActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PushNotification> call, Throwable t) {
+                Toast.makeText(UpdateActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
 }

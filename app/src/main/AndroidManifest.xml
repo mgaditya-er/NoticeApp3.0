@@ -113,13 +113,6 @@
         <!-- android:value="" /> -->
         <!-- </activity> -->
         <activity
-            android:name=".AddNotice2"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".AddActivity"
             android:exported="false">
             <meta-data

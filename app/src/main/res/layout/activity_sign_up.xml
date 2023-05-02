@@ -99,6 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_marginTop="20dp"
+                android:maxLength="10"
                 android:background="@drawable/custom_edittext"
                 android:drawableLeft="@drawable/ic_baseline_phone_24"
                 android:drawablePadding="8dp"

@@ -106,14 +106,14 @@ public class AdminBatches extends AppCompatActivity {
                     String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
                     batch.getEmails().add(userEmail);
 
-                    Notice notice = new Notice("Intro");
-                    DatabaseReference batchesRef1 = FirebaseDatabase.getInstance().getReference().child("batches").child(code).child("notices");
-                    String noticeId = batchesRef1.push().getKey();
-
-                    batch.getNotices().add(noticeId);
-                    Notice notice1 = new Notice("Intro","",null);
-
-                    batchesRef1.child(noticeId).setValue(notice1);
+//                    Notice notice = new Notice("Intro");
+//                    DatabaseReference batchesRef1 = FirebaseDatabase.getInstance().getReference().child("batches").child(code).child("notices");
+//                    String noticeId = batchesRef1.push().getKey();
+//
+//                    batch.getNotices().add(noticeId);
+//                    Notice notice1 = new Notice("Intro","",null);
+//
+//                    batchesRef1.child(noticeId).setValue(notice1);
 
 
 // Save the Batch object to Firebase

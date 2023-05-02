@@ -71,7 +71,7 @@ public class TeacherHome extends AppCompatActivity implements NavigationView.OnN
                 String emailUser = intent1.getStringExtra("email");
                 String passwordUser = intent1.getStringExtra("password");
 //                Intent intent = new Intent(TeacherHome.this, ProfileActivity.class);
-                Intent intent = new Intent(TeacherHome.this, NotificationHome.class);
+                Intent intent = new Intent(TeacherHome.this, ProfileActivity.class);
 
                 intent.putExtra("email", emailUser);
                 intent.putExtra("password", passwordUser);
@@ -93,16 +93,7 @@ public class TeacherHome extends AppCompatActivity implements NavigationView.OnN
                     @Override
                     public void onClick(View v) {
                         // Perform the log-out action here
-                        // In this example, we'll just finish the current activity
-//                        SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.SHARED_PREFS,0);
-//                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.clear();
-//                        editor.commit();
-//                        auth.signOut();
-//                        Intent intent = new Intent(TeacherHome.this, LoginActivity.class);
 
-//                        startActivity(intent);
-                        // In this example, we'll just finish the current activity
                         Intent intent = new Intent(TeacherHome.this, LoginActivity.class);
 
                         finish();

@@ -135,14 +135,7 @@ public class MainActivity2 extends AppCompatActivity {
 
         }
 
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity2.this, UploadActivity.class);
-//                intent.putExtra("code",batchcode);
-//                startActivity(intent);
-//            }
-//        });
+
 
     }
     public void searchList(String text){

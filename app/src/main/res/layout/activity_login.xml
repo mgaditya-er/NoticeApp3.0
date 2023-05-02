@@ -45,6 +45,7 @@
                 android:hint="Email"
                 android:drawableLeft="@drawable/ic_baseline_person_24"
                 android:textColor="@color/black"
+                android:textSize="16dp"
                 android:drawablePadding="8dp"/>
 
             <EditText
@@ -56,6 +57,7 @@
                 android:inputType="textPassword"
                 android:padding="8dp"
                 android:hint="Password"
+                android:textSize="16dp"
                 android:drawableLeft="@drawable/ic_baseline_lock_24"
                 android:textColor="@color/black"
                 android:drawablePadding="8dp"/>

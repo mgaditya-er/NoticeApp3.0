@@ -115,7 +115,7 @@ public class DetailActivity extends AppCompatActivity {
                                         public void onSuccess(Void unused) {
                                             reference.child(key).removeValue();
                                             Toast.makeText(DetailActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                            startActivity(new Intent(getApplicationContext(), AdminBatches.class));
                                             finish();
                                         }
                                     });

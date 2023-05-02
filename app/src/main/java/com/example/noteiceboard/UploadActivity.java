@@ -216,6 +216,8 @@ public class UploadActivity extends AppCompatActivity {
 
                             PushNotification notification = new PushNotification(new NotificationData(titletxt,messagetxt),TOPIC);
                             sendNotification(notification);
+                            Intent intent = new Intent(UploadActivity.this, AdminBatches.class);
+
                             finish();
                         }
                     }
