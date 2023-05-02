@@ -25,16 +25,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,20 +57,7 @@ public class StudBatchesFragment extends Fragment {
     private String currentUserEmail;
     private String studentId1;
 
-    private BroadcastReceiver mNotificationReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Show the notification
-            Notification notification = intent.getParcelableExtra("notification");
-            NotificationManagerCompat.from(context).notify(1, notification);
-        }
-    };
-    @Override
-    public void onResume() {
-        super.onResume();
-        IntentFilter filter = new IntentFilter("notification_received");
-        getActivity().registerReceiver(mNotificationReceiver, filter);
-    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_stud_batches, container, false);
@@ -78,6 +71,24 @@ public class StudBatchesFragment extends Fragment {
             public void onClick(View view) {
                 // Show popup or any other action you want to perform on click
                 showPopup();
+
+                // Trigger the Cloud Function to send push notifications to students who have joined the batch.
+                FirebaseFunctions functions = FirebaseFunctions.getInstance();
+                functions.getHttpsCallable("sendNotificationFunction")
+                        .call()
+                        .addOnSuccessListener(new OnSuccessListener<HttpsCallableResult>() {
+                            @Override
+                            public void onSuccess(HttpsCallableResult result) {
+                                Log.d("TAG", "Cloud Function successfully triggered.");
+                                Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("TAG", "Failed to trigger Cloud Function.", e);
+                            }
+                        });
             }
         });
 
@@ -236,6 +247,29 @@ public class StudBatchesFragment extends Fragment {
                                             //
 
                                             Toast.makeText(getApplicationContext(), "Added to batch!", Toast.LENGTH_SHORT).show();
+                                            FirebaseMessaging.getInstance().getToken()
+                                                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<String> task) {
+                                                            if (!task.isSuccessful()) {
+                                                                Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                                                                return;
+                                                            }
+
+                                                            // Save the FCM registration token to the Firebase Realtime Database
+                                                            String token = task.getResult();
+                                                            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                                                            if (currentUser != null) {
+                                                                String userId = currentUser.getUid();
+                                                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+                                                                DatabaseReference userRef = usersRef.child(userId);
+                                                                userRef.child("fcmToken").setValue(token);
+                                                                Toast.makeText(getApplicationContext(), ""+userId, Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
+
+
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {

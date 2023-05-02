@@ -5,10 +5,17 @@ package com.example.noteiceboard;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import android.content.Intent;
 
 import android.text.TextUtils;
@@ -51,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
         signupRedirectText = findViewById(R.id.signUpRedirectText);
         forgotPassword = findViewById(R.id.forgot_password);
         auth = FirebaseAuth.getInstance();
+
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +135,10 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Define your notification channel ID as a constant string
+
+
+                //
                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                 View dialogView = getLayoutInflater().inflate(R.layout.dialog_forgot, null);
                 EditText emailBox = dialogView.findViewById(R.id.emailBox);

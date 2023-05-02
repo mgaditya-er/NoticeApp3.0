@@ -79,9 +79,6 @@ public class DetailActivity extends AppCompatActivity {
                 intent.setType("application/pdf");
                 intent.setData(Uri.parse(pdfUrl));
                 startActivity(intent);
-                // Execute an AsyncTask to download the PDF
-//                new DownloadPdfTask().execute(pdfUrl);
-                Toast.makeText(DetailActivity.this, ""+pdfUrl, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -134,6 +131,7 @@ public class DetailActivity extends AppCompatActivity {
                                             .putExtra("Description", detailDesc.getText().toString())
                                             .putExtra("Language", detailLang.getText().toString())
                                             .putExtra("Image", imageUrl)
+                                            .putExtra("pdf",pdfUrl)
                                             .putExtra("Key", key);
                                     startActivity(intent);
                                 }

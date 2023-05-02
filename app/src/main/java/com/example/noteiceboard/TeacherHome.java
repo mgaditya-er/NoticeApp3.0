@@ -67,7 +67,6 @@ public class TeacherHome extends AppCompatActivity implements NavigationView.OnN
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                 break;
             case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
                 Intent intent1 = getIntent();
                 String emailUser = intent1.getStringExtra("email");
                 String passwordUser = intent1.getStringExtra("password");

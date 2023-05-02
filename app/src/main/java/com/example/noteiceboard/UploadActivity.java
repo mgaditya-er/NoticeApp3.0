@@ -10,10 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -35,6 +36,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UploadActivity extends AppCompatActivity {
 
@@ -116,6 +119,7 @@ public class UploadActivity extends AppCompatActivity {
         });
 
 
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,6 +189,8 @@ public class UploadActivity extends AppCompatActivity {
         String desc = uploadDesc.getText().toString();
         String lang = uploadLang.getText().toString();
 
+
+
         DataClass dataClass = new DataClass(title, desc, lang, imageURL,pdfURl);
 
         //We are changing the child from title to currentDate,
@@ -198,24 +204,19 @@ public class UploadActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(UploadActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                NotificationChannel channel = new NotificationChannel("my_channel_id", "My Channel", NotificationManager.IMPORTANCE_DEFAULT);
-                                NotificationManager notificationManager = getSystemService(NotificationManager.class);
-                                notificationManager.createNotificationChannel(channel);
-                            }
-
-                            // Show notification
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(UploadActivity.this, "my_channel_id")
+                            // Create a notification data payload
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(UploadActivity.this, "channel_id")
                                     .setSmallIcon(R.drawable.notification_icon)
-                                    .setContentTitle("notice uploaded on"+currentDate)
-                                    .setContentText("for "+batchcode)
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(UploadActivity.this);
-                            notificationManager.notify(1, builder.build());
+                                    .setContentTitle("New Notice Added")
+                                    .setContentText(""+title+""+currentDate)
+                                    .setPriority(NotificationCompat.PRIORITY_HIGH);
 
-                            Intent intent = new Intent("notification_received");
-                            intent.putExtra("notification", builder.build());
-                            sendBroadcast(intent);
+                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(UploadActivity.this);
+
+                            // notificationId is a unique int for each notification that you must define
+                            int notificationId = 1;
+                            notificationManager.notify(notificationId, builder.build());
+
                             finish();
                         }
                     }
@@ -225,5 +226,8 @@ public class UploadActivity extends AppCompatActivity {
                         Toast.makeText(UploadActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
+
     }
 }

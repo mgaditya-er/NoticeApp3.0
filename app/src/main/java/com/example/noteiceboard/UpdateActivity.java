@@ -38,12 +38,12 @@ import com.google.firebase.storage.UploadTask;
 public class UpdateActivity extends AppCompatActivity {
 
     ImageView updateImage;
-    Button updateButton;
+    Button updateButton,updatePdf;
     EditText updateDesc, updateTitle, updateLang;
     String title, desc, lang;
-    String imageUrl;
-    String key, oldImageURL;
-    Uri uri;
+    String imageUrl,pdfUrl;
+    String key, oldImageURL,oldpdfurl;
+    Uri uri,uri1;
     DatabaseReference databaseReference;
     StorageReference storageReference;
 
@@ -58,7 +58,7 @@ public class UpdateActivity extends AppCompatActivity {
         updateImage = findViewById(R.id.updateImage);
         updateLang = findViewById(R.id.updateLang);
         updateTitle = findViewById(R.id.updateTitle);
-
+        updatePdf = findViewById(R.id.changePDFButton);
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -82,6 +82,8 @@ public class UpdateActivity extends AppCompatActivity {
             updateLang.setText(bundle.getString("Language"));
             key = bundle.getString("Key");
             oldImageURL = bundle.getString("Image");
+            oldpdfurl = bundle.getString("pdf");
+
         }
         databaseReference = FirebaseDatabase.getInstance().getReference("notices").child(batchcode).child(key);
 
@@ -91,6 +93,35 @@ public class UpdateActivity extends AppCompatActivity {
                 Intent photoPicker = new Intent(Intent.ACTION_PICK);
                 photoPicker.setType("image/*");
                 activityResultLauncher.launch(photoPicker);
+            }
+        });
+
+
+        ActivityResultLauncher<Intent> activityResultLauncher1 = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            uri1 = data.getData();
+                            // Display the name of the selected file
+                            Toast.makeText(UpdateActivity.this, "Selected file: " + uri.getLastPathSegment(), Toast.LENGTH_SHORT).show();
+
+                            updatePdf.setBackgroundColor(getResources().getColor(R.color.teal_200));
+                            updatePdf.setText("File changed");
+                        } else {
+                            Toast.makeText(UpdateActivity.this, "No file Changed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        updatePdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pdfPicker = new Intent(Intent.ACTION_GET_CONTENT);
+                pdfPicker.setType("application/pdf");
+                activityResultLauncher1.launch(pdfPicker);
             }
         });
         updateButton.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +135,8 @@ public class UpdateActivity extends AppCompatActivity {
     }
     public void saveData(){
         storageReference = FirebaseStorage.getInstance().getReference().child("Android Images").child(uri.getLastPathSegment());
-
+        StorageReference storageReference1 = FirebaseStorage.getInstance().getReference().child("Android Images")
+                .child(uri1.getLastPathSegment());
         AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
         builder.setCancelable(false);
         builder.setView(R.layout.progress_layout);
@@ -118,7 +150,30 @@ public class UpdateActivity extends AppCompatActivity {
                 while (!uriTask.isComplete());
                 Uri urlImage = uriTask.getResult();
                 imageUrl = urlImage.toString();
-                updateData();
+                //
+                storageReference1.putFile(uri1).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isComplete());
+                        Uri urlPDF = uriTask.getResult();
+                        pdfUrl = urlPDF.toString();
+                        updateData();
+
+                        dialog.dismiss();
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        dialog.dismiss();
+                    }
+                });
+
+                //
+
+
+
 
                 dialog.dismiss();
 
@@ -135,14 +190,17 @@ public class UpdateActivity extends AppCompatActivity {
         desc = updateDesc.getText().toString().trim();
         lang = updateLang.getText().toString();
 
-        DataClass dataClass = new DataClass(title, desc, lang, imageUrl);
+        DataClass dataClass = new DataClass(title, desc, lang, imageUrl,pdfUrl);
 
         databaseReference.setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
+                    StorageReference reference2 = FirebaseStorage.getInstance().getReferenceFromUrl(oldpdfurl);
+
                     reference.delete();
+                    reference2.delete();
                     Toast.makeText(UpdateActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                     finish();
                 }
