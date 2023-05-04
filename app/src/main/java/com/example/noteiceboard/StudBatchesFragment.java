@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class StudBatchesFragment extends Fragment {
+public class StudBatchesFragment<value> extends Fragment {
 
     private FloatingActionButton addButton;
     private RecyclerView recyclerView;
@@ -56,7 +56,7 @@ public class StudBatchesFragment extends Fragment {
     private FirebaseAuth mAuth;
     private String currentUserEmail;
     private String studentId1;
-
+    int newcode,value;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,23 +72,7 @@ public class StudBatchesFragment extends Fragment {
                 // Show popup or any other action you want to perform on click
                 showPopup();
 
-                // Trigger the Cloud Function to send push notifications to students who have joined the batch.
-                FirebaseFunctions functions = FirebaseFunctions.getInstance();
-                functions.getHttpsCallable("sendNotificationFunction")
-                        .call()
-                        .addOnSuccessListener(new OnSuccessListener<HttpsCallableResult>() {
-                            @Override
-                            public void onSuccess(HttpsCallableResult result) {
-                                Log.d("TAG", "Cloud Function successfully triggered.");
-                                Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e("TAG", "Failed to trigger Cloud Function.", e);
-                            }
-                        });
+//
             }
         });
 
@@ -112,12 +96,15 @@ public class StudBatchesFragment extends Fragment {
                     }
                 } else {
                     // No students found with the current user's email
+                    Toast.makeText(getContext(), "Error1", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Handle errors here
+                Toast.makeText(getContext(), "Error2", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -133,10 +120,12 @@ public class StudBatchesFragment extends Fragment {
                 List<Batch> batches = new ArrayList<>();
                 for (DataSnapshot batchSnapshot : snapshot.getChildren()) {
                     Batch batch = batchSnapshot.getValue(Batch.class);
-                    if(batch.getCode()==1111 || batch.getCode()==2222)
+                    Toast.makeText(getContext(), ""+newcode, Toast.LENGTH_SHORT).show();
+                    if(batch.getCode()==1111 || batch.getCode()==2222 || batch.getCode()==newcode)
                     {
                         batches.add(batch);
                     }
+
                 }
                 BatchAdapter adapter = new BatchAdapter(batches);
                 recyclerView.setAdapter(adapter);
@@ -152,6 +141,11 @@ public class StudBatchesFragment extends Fragment {
         return rootView;
     }
 
+//    private int updatelist(){
+//
+//        newcode = value;
+//        return newcode;
+//    }
     private void showPopup() {
         // Inflate layout for popup
         View popupView = getLayoutInflater().inflate(R.layout.popup_layout, null);
@@ -222,14 +216,6 @@ public class StudBatchesFragment extends Fragment {
                                                             // Do something with the studentId
                                                             Toast.makeText(getApplicationContext(), "id"+studentId, Toast.LENGTH_SHORT).show();
 
-                                                            //
-
-
-
-
-                                                            //
-
-
                                                         }
                                                     } else {
                                                         // No students found with the current user's email
@@ -242,34 +228,38 @@ public class StudBatchesFragment extends Fragment {
                                                 }
                                             });
 
+                                            Toast.makeText(getApplicationContext(), "Added to batch!", Toast.LENGTH_SHORT).show();
+                        //
+                                            int newcode = Integer.parseInt(batchCode);
 
+                                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                            DatabaseReference batchesRef = database.getReference("batches");
+                                            // Retrieve data from Firebase and display in RecyclerView
+                                            batchesRef.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    List<Batch> batches = new ArrayList<>();
+                                                    for (DataSnapshot batchSnapshot : snapshot.getChildren()) {
+                                                        Batch batch = batchSnapshot.getValue(Batch.class);
+
+                                                        if(batch.getCode()==1111 || batch.getCode()==2222 || batch.getCode()==newcode)
+                                                        {
+                                                            batches.add(batch);
+                                                        }
+
+                                                    }
+                                                    BatchAdapter adapter = new BatchAdapter(batches);
+                                                    recyclerView.setAdapter(adapter);
+                                                }
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                    // Handle database error
+                                                    Toast.makeText(getContext(), "No batch found!", Toast.LENGTH_SHORT).show();
+
+                                                }
+                                            });
 
                                             //
-
-                                            Toast.makeText(getApplicationContext(), "Added to batch!", Toast.LENGTH_SHORT).show();
-                                            FirebaseMessaging.getInstance().getToken()
-                                                    .addOnCompleteListener(new OnCompleteListener<String>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<String> task) {
-                                                            if (!task.isSuccessful()) {
-                                                                Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                                                                return;
-                                                            }
-
-                                                            // Save the FCM registration token to the Firebase Realtime Database
-                                                            String token = task.getResult();
-                                                            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                                                            if (currentUser != null) {
-                                                                String userId = currentUser.getUid();
-                                                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-                                                                DatabaseReference userRef = usersRef.child(userId);
-                                                                userRef.child("fcmToken").setValue(token);
-                                                                Toast.makeText(getApplicationContext(), ""+userId, Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        }
-                                                    });
-
-
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
