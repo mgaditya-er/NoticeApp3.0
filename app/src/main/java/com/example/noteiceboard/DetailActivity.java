@@ -1,5 +1,6 @@
 package com.example.noteiceboard;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +35,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.util.Calendar;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -103,20 +107,52 @@ public class DetailActivity extends AppCompatActivity {
                         if (role.equals("Teacher")) {
                             // Show the floating button
                             deleteButton.setVisibility(View.VISIBLE);
+//                            deleteButton.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View view) {
+////                                    final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("notices").child(batchcode).child(key);
+//                                    final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Android Tutorials");
+//                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+//
+//                                    StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
+//                                    storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void unused) {
+//                                            reference.child(key).removeValue();
+//                                            Toast.makeText(DetailActivity.this, "Deleted"+batchcode, Toast.LENGTH_SHORT).show();
+//                                            startActivity(new Intent(getApplicationContext(), AdminBatches.class));
+//                                            finish();
+//                                        }
+//                                    });
+//                                }
+//                            });
+                            String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+
                             deleteButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Android Tutorials");
+                                    final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("notices").child(batchcode).child(key);
                                     FirebaseStorage storage = FirebaseStorage.getInstance();
-
                                     StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
+                                    StorageReference pdfStorageReference = storage.getReferenceFromUrl(pdfUrl);
+
                                     storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            reference.child(key).removeValue();
-                                            Toast.makeText(DetailActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(getApplicationContext(), AdminBatches.class));
-                                            finish();
+                                            pdfStorageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    reference.child(key).removeValue();
+                                                    Toast.makeText(DetailActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                                    startActivity(new Intent(getApplicationContext(), MainActivity2.class));
+                                                    finish();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(DetailActivity.this, "Failed to delete PDF", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
                                         }
                                     });
                                 }

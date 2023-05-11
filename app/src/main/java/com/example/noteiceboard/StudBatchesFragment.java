@@ -110,6 +110,7 @@ public class StudBatchesFragment<value> extends Fragment {
 
 //----
 
+
         // Get a reference to the Firebase database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference batchesRef = database.getReference("batches");
@@ -138,6 +139,27 @@ public class StudBatchesFragment<value> extends Fragment {
             }
         });
 
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Save the FCM registration token to the Firebase Realtime Database
+                        String token = task.getResult();
+                        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                        if (currentUser != null) {
+                            String userId = currentUser.getUid();
+                            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+                            DatabaseReference userRef = usersRef.child(userId);
+                            userRef.child("fcmToken").setValue(token);
+                            Toast.makeText(getContext(), ""+userId, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
         return rootView;
     }
 
@@ -230,6 +252,7 @@ public class StudBatchesFragment<value> extends Fragment {
 
                                             Toast.makeText(getApplicationContext(), "Added to batch!", Toast.LENGTH_SHORT).show();
                         //
+
                                             int newcode = Integer.parseInt(batchCode);
 
                                             FirebaseDatabase database = FirebaseDatabase.getInstance();
